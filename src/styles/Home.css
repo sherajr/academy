@@ -112,7 +112,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 
@@ -305,6 +304,5 @@
 
 .container, .card {
   max-width: 100%;
-  overflow-x: auto; /* Add horizontal scrollbar inside the container if the content overflows */
 }
 
