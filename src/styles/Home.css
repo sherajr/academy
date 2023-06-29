@@ -1,11 +1,14 @@
 .container {
-  padding: 0 0rem;
+  padding: 1em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  max-width: 100%; /* Ensure the container doesn't exceed the viewport width */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .header-container {
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .header-image {
@@ -14,7 +17,7 @@
 }
 
 .header-image-overlay {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -58,6 +61,7 @@
 .title,
 .description {
   text-align: center;
+  overflow-x: auto;
 }
 
 
@@ -70,6 +74,7 @@
   margin-bottom: 2rem;
   line-height: 1.5;
   font-size: 1.5rem;
+  overflow-x: auto;
 }
 
 .code {
@@ -87,7 +92,7 @@
   justify-content: center;
   flex-wrap: wrap;
   flex-direction: row;
-  max-width: 1200px;
+  max-width: 90vw;
   margin: auto;
 }
 
@@ -101,12 +106,13 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 1500px;
+  max-width: 100%; /* Ensure the card doesn't exceed the viewport width */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   background-image: linear-gradient(to bottom, #1b2018, #130f06);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 
@@ -139,7 +145,7 @@
 
 @media (max-width: 600px) {
   .grid {
-    width: 100%;
+    width: 100vw;
     flex-direction: column;
   }
 }
@@ -180,14 +186,14 @@
 
 .course-info {
   /* This will place the course-info at the top of the course card */
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   padding: 10px;
 }
 
 .card-info {
-  left: 0;
+  
   flex: 1;
   padding: 0 1rem;
   text-align: left;
@@ -297,4 +303,8 @@
   margin-bottom: 0.1rem; /* Adjust as needed */
 }
 
+.container, .card {
+  max-width: 100%;
+  overflow-x: auto; /* Add horizontal scrollbar inside the container if the content overflows */
+}
 

@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 
 //Factory Contract Functions
 export default function Home() {
-  const academyAddress = "0x921342B738580bb82896588eb0f1E3893204330c"
+  const academyAddress = "0x3DE3360607d50b6e5f88412f785b2D0CF63fb50a"
   // eslint-disable-next-line
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const address = useAddress();
@@ -84,7 +84,7 @@ export default function Home() {
            onConnect={(address) => (address)}
            />
         </div>
-
+        <div className="header-container">
         <div className="description">
         “Live as if you were to die tomorrow; learn as if you were to live forever” - Mahatma Gandhi. 
          <div>
@@ -130,7 +130,7 @@ export default function Home() {
          Have your syllabus ready? Create your Course now!
           </p>
         </div>
-        
+        </div>
         <div>
         {/* Add a button for creating courses */}
         <Web3Button
@@ -294,7 +294,7 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     const [description, setDescription] = useState("");
     const [timeCommitment, setTimeCommitment] = useState("");
     const [courseInfo, setCourseInfo] = useState(null);
-    const [isLoadingCourseInfo, setIsLoadingCourseInfo] = useState(true);
+    const [courseInfoUri, setCourseInfoUri] = useState("");
     const [pdfData, setPdfData] = useState("");
     const [syllabusPdf, setSyllabusPdf] = useState(null);
 
@@ -414,6 +414,7 @@ console.log("paymentStatusEvents:", paymentStatusEvents);
 console.log("roleGrantedEvents:", roleGrantedEvents);
 console.log("dropoutEvents:", dropoutEvents);
 console.log("courseInfo", courseInfo);
+console.log("courseInfoUri", courseInfoUri);
 console.log("pdfData", pdfData);
 console.log("syllabusPdf", syllabusPdf);
 
@@ -449,9 +450,9 @@ console.log("syllabusPdf", syllabusPdf);
         }
       };
   
-      const courseInfo = await storage.upload(jsonFile);
-      console.log("File uploaded successfully:", courseInfo);
-      setCourseInfo(courseInfo);
+      const courseInfoUri = await storage.upload(jsonFile);
+      console.log("File uploaded successfully:", courseInfoUri);
+      setCourseInfoUri(courseInfoUri);
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
@@ -472,13 +473,14 @@ console.log("syllabusPdf", syllabusPdf);
 
   const setPaymentCall = async () => {
     try {
-      if (!courseInfo) {
+      if (!courseInfoUri) {
         console.error("Course info is not available");
         return;
       }
   
-      const setPaymentData = await setPayment({ args: [paymentAmountInWei, courseInfo] });
+      const setPaymentData = await setPayment({ args: [paymentAmountInWei, courseInfoUri] });
       console.info("Contract call success", setPaymentData);
+
       const uriData = await uriCall();
       console.info("uriData call success", uriData);
     } catch (err) {
@@ -699,7 +701,8 @@ return (
             // After successful file upload, call setPaymentCall
             const setPaymentResult = await setPaymentCall();
             console.log("Set payment call success:", setPaymentResult);
-            await uriCall();
+            const uriData = await uriCall();
+            return(uriData);
             
           } catch (error) {
             console.error("Error during file upload or set payment call:", error);
