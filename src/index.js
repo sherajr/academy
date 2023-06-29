@@ -10,6 +10,9 @@ import { ThirdwebProvider,
  } from "@thirdweb-dev/react";
 import "./styles/globals.css";
 
+if (typeof process === 'undefined') {
+  window.process = { nextTick: function(callback) { setTimeout(callback, 0); } };
+}
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.

@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 
 //Factory Contract Functions
 export default function Home() {
-  const academyAddress = "0x3DE3360607d50b6e5f88412f785b2D0CF63fb50a"
+  const academyAddress = "0x921342B738580bb82896588eb0f1E3893204330c"
   // eslint-disable-next-line
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const address = useAddress();
