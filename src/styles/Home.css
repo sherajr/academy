@@ -1,137 +1,135 @@
-.main {
-  width: 100vw;
-  min-height: 100vh;
-  height: auto;
-  padding: 4rem 0;
-  /* flex: 1; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: left; */
-}
-
 .container {
+  padding: 0 0rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.header-image {
   width: 100%;
-  max-width: 1440px;
-  padding: 0 1rem;
-  margin: 0 auto;
+  height: auto;
 }
 
-.header {
-  /* margin-left: 4rem; */
+.header-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.37); /* Adjust the opacity as desired */
 }
 
-.gradient-text-0 {
-  background: -webkit-linear-gradient(#BFA3DA, #84309C, #C735B0);
-  -webkit-background-clip: text;
-    background-clip: text;
-  -webkit-text-fill-color: transparent;
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.gradient-text-1 {
-  background: -webkit-linear-gradient(#a79af9, #7aa8d2);
-  -webkit-background-clip: text;
-    background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-text-2 {
-  background: -webkit-linear-gradient(#bfa3da, #743f93);
-  -webkit-background-clip: text;
-    background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-text-3 {
-  background: -webkit-linear-gradient(#c35ab1, #e9a8d9);
-  -webkit-background-clip: text;
-    background-clip: text;
-  -webkit-text-fill-color: transparent;
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  color: #2e700d;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .title a:hover,
 .title a:focus,
 .title a:active {
   text-decoration: underline;
-  text-decoration-color: #84309C;
 }
 
 .title {
+  margin: 0;
   line-height: 1.15;
   font-size: 4rem;
 }
 
+
+
 .title,
 .description {
-  text-align: left;
+  text-align: center;
 }
+
 
 .connect {
   margin-bottom: 2rem;
 }
 
 .description {
-  margin-top: 2rem;
+  margin-top: 3rem;
   margin-bottom: 2rem;
   line-height: 1.5;
   font-size: 1.5rem;
 }
 
 .code {
-  background: #555;
+  background: #fafafa;
   border-radius: 5px;
-  padding: 0.5em;
+  padding: 0.75rem;
   font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 .grid {
   display: flex;
-  justify-content: left;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: row;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .card {
-  background-color: #131313;
+  background-color: #1b2129;
+  margin: 1rem;
+  padding: 1.5rem;
   text-align: left;
   color: inherit;
   text-decoration: none;
+  border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 440px;
-  overflow: none;
-  border: none;
+  max-width: 1500px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  background-image: linear-gradient(to bottom, #1b2018, #130f06);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.card-text {
-  padding: 1rem;
-}
-
-.card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 4px 4px 0 0;
-  margin-bottom: 12px;
-  border: none; /* Remove image border */
-}
 
 .card:hover,
 .card:focus,
 .card:active {
-  background-color: #272c34;
-  opacity: 80%;
+  background-color: #e5ded1;
+  color: #cfe3c5;
+  border-color: #88d463;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card h2 {
-  margin: 0 0 0.75rem 0;
-  /* padding: 1rem; */
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  align-items: center;
 }
 
 .card p {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.75;
-  /* padding: 1rem; */
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .logo {
@@ -139,24 +137,164 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .header {
-    margin-left: 0;
-  }
+@media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
   }
-  .title {
-    font-size: 3rem;
-    line-height: 1.15;
-  }
 }
+
 
 .card,
 .footer {
   border-color: #222;
 }
+.code {
+  background: #111;
+}
 .logo img {
   filter: invert(1);
 }
+
+.course-card {
+  border: 3px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: flex-start;
+}
+
+.card .course-card {
+  border: 3px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: flex-start;
+}
+
+.course-info {
+  /* This will place the course-info at the top of the course card */
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+.card-info {
+  left: 0;
+  flex: 1;
+  padding: 0 1rem;
+  text-align: left;
+}
+
+.card-media {
+  /* New styles */
+  flex: 1;
+  text-align: right;
+}
+
+.card .small-text {
+  font-size: 10px;
+}
+
+.small-text {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.medium-text {
+  /* This will make the font size smaller */
+  font-size: 14px;
+  font-weight: 700;
+  color: #e08e8e;
+}
+
+.card .course-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2e700d;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+.syllabus-download {
+  margin-top: 10px;
+}
+
+/* .card-media .syllabus-download {
+  margin-top: 0.5rem;
+} */
+
+
+.download-link {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.course-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.course-details p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.actions summary {
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+
+.actions summary:focus {
+  outline: none;
+}
+
+.actions details {
+  margin-top: 0.5rem;
+}
+
+.actions details p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.actions .sponsor-actions,
+.actions .teacher-actions {
+  margin-top: 1rem;
+}
+
+.actions .sponsor-actions input[type="uint"],
+.actions .teacher-actions input[type="text"] {
+  margin-top: 0.5rem;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.actions .sponsor-actions button,
+.actions .teacher-actions button {
+  margin-top: 0.5rem;
+}
+
+.course-title-container {
+  margin-bottom: 0.1rem; /* Adjust as needed */
+}
+
+
