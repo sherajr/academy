@@ -1,14 +1,12 @@
 .container {
-  padding: 1em;
+  padding: 0 0rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow-x: auto;
-  max-width: 100%; /* Ensure the container doesn't exceed the viewport width */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .header-container {
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .header-image {
@@ -17,7 +15,7 @@
 }
 
 .header-image-overlay {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -61,7 +59,6 @@
 .title,
 .description {
   text-align: center;
-  overflow-x: auto;
 }
 
 
@@ -74,7 +71,6 @@
   margin-bottom: 2rem;
   line-height: 1.5;
   font-size: 1.5rem;
-  overflow-x: auto;
 }
 
 .code {
@@ -92,7 +88,7 @@
   justify-content: center;
   flex-wrap: wrap;
   flex-direction: row;
-  max-width: 90vw;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -105,8 +101,8 @@
   text-decoration: none;
   border: 1px solid #eaeaea;
   border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 100%; /* Ensure the card doesn't exceed the viewport width */
+  transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  max-width: 1500px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   background-image: linear-gradient(to bottom, #1b2018, #130f06);
   display: flex;
@@ -120,8 +116,7 @@
 .card:active {
   background-color: #e5ded1;
   color: #cfe3c5;
-  border-color: #88d463;
-  transform: translateY(-2px);
+  border-color: #8247E5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -137,17 +132,90 @@
   line-height: 1.5;
 }
 
+/* Styles for different statuses */
+.card.pending:hover,
+.small-text.pending {
+  border-color: orange;
+}
+
+.card.open:hover,
+.small-text.open {
+  border-color: green; /* Change to your preferred color */
+}
+
+.card.in-progress:hover,
+.small-text.in-progress {
+  border-color: rgb(255, 0, 221); /* Change to your preferred color */
+}
+
+.card.complete:hover,
+.small-text.complete {
+  border-color: grey; /* Change to your preferred color */
+}
+
+/* Styles for course status text */
+.course-status.pending {
+  color: orange;
+}
+
+.course-status.open {
+  color: green; /* Change to your preferred color */
+}
+
+.course-status.in-progress {
+  color: rgb(255, 0, 221); /* Change to your preferred color */
+}
+
+.course-status.complete {
+  color: grey; /* Change to your preferred color */
+}
+
 .logo {
   height: 1em;
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100vw;
-    flex-direction: column;
+  @media (max-width: 600px) {
+    .main {
+      padding: 1rem 0;
+      align-items: flex-start;  /* Align content to the start */
+    }
+  
+    .title {
+      font-size: 2rem;
+    }
+  
+    .description {
+      font-size: 1rem;
+    }
+  
+    .card {
+      padding: 1rem;
+      flex-direction: column;
+    }
+  
+    .course-title {
+      font-size: 1.2rem;
+    }
+  
+    .small-text, .medium-text {
+      font-size: 0.8rem;
+    }
+  
+    .grid {
+      flex-direction: column;
+      margin: 0 10px; /* Adding some margin to prevent content being cut off */
+    }
+    
+    .course-card {
+      flex-direction: column;
+    }
+  
+    .card-info, .card-media {
+      padding: 1rem 0;
+      text-align: center;
+    }
   }
-}
 
 
 .card,
@@ -185,14 +253,14 @@
 
 .course-info {
   /* This will place the course-info at the top of the course card */
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 10px;
 }
 
 .card-info {
-  
+  left: 0;
   flex: 1;
   padding: 0 1rem;
   text-align: left;
@@ -302,7 +370,36 @@
   margin-bottom: 0.1rem; /* Adjust as needed */
 }
 
-.container, .card {
-  max-width: 100%;
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #4CAF50; /* You can change this */
+  color: white; /* You can change this */
+  border-radius: 4px; /* Optional */
 }
 
+.upload-card {
+  padding: 20px;
+  border: 2px solid #ce7c7c; /* Red border */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  margin: 10px;
+  background-color: #ce7c7c; /* Red background */
+  color: #ffffff; /* White text */
+  font-weight: bold; /* Bold text */
+  cursor: pointer; /* Hand cursor on hover */
+  transition: all 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+.upload-card:hover {
+  background-color: #e7d0d0; /* Lighter red on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bigger shadow on hover */
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}

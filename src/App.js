@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 
 //Factory Contract Functions
 export default function Home() {
-  const academyAddress = "0x3DE3360607d50b6e5f88412f785b2D0CF63fb50a"
+  const academyAddress = "0x03aB6c074373e7957e07bF3FEb0629E5323a464B"
   // eslint-disable-next-line
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const address = useAddress();
@@ -20,7 +20,7 @@ export default function Home() {
     {
       queryFilter: {
         filters: {},
-        fromBlock: 	44366314, // Events starting from this block
+        fromBlock: 	44871649, // Events starting from this block
         toBlock: "latest", // Events up to this block
         order: "asc", // Order of events ("asc" or "desc")
       },
@@ -84,9 +84,9 @@ export default function Home() {
            onConnect={(address) => (address)}
            />
         </div>
-        <div className="header-container">
+
         <div className="description">
-        “Live as if you were to die tomorrow; learn as if you were to live forever” - Mahatma Gandhi. 
+        “Live as if you were to die tomorrow. Learn as if you were to live forever.” - Mahatma Gandhi 
          <div>
             {isLoadingAcademyInfo ? (
               <p>Loading...</p>
@@ -130,7 +130,7 @@ export default function Home() {
          Have your syllabus ready? Create your Course now!
           </p>
         </div>
-        </div>
+        
         <div>
         {/* Add a button for creating courses */}
         <Web3Button
@@ -228,7 +228,7 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     {
       queryFilter: {
         filters: {},
-        fromBlock: 44366314, // Events starting from this block
+        fromBlock: 44871649, // Events starting from this block
         toBlock: "latest", // Events up to this block
         order: "asc", // Order of events ("asc" or "desc")
       },
@@ -241,7 +241,7 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     {
       queryFilter: {
         filters: {},
-        fromBlock: 44366314, // Events starting from this block
+        fromBlock: 44871649, // Events starting from this block
         toBlock: "latest", // Events up to this block
         order: "asc", // Order of events ("asc" or "desc")
       },
@@ -254,7 +254,7 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     {
       queryFilter: {
         filters: {},
-        fromBlock: 44366314, // Events starting from this block
+        fromBlock: 44871649, // Events starting from this block
         toBlock: "latest", // Events up to this block
         order: "asc", // Order of events ("asc" or "desc")
       },
@@ -271,7 +271,11 @@ function CourseCard({ item, courseNumber, academyAddress }) {
   const paymentAmountInWei = ethers.utils.parseUnits(paymentAmount.toString(), 'ether');
 
   const [sponsorAmount, setSponsorAmount] = useState(0);
-  const sponsorAmountInWei = ethers.utils.parseUnits(sponsorAmount.toString(), 'ether');
+  let sponsorAmountInWei = '0';
+    if (sponsorAmount !== '') {
+        sponsorAmountInWei = ethers.utils.parseUnits(sponsorAmount.toString(), 'ether');
+    }
+
   
   const [bootAddress, setBootAddress] = useState("");
   const [studentAddress, setStudentAddress] = useState("");
@@ -294,9 +298,14 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     const [description, setDescription] = useState("");
     const [timeCommitment, setTimeCommitment] = useState("");
     const [courseInfo, setCourseInfo] = useState(null);
-    const [courseInfoUri, setCourseInfoUri] = useState("");
+    const [isLoadingCourseInfo, setIsLoadingCourseInfo] = useState(true);
     const [pdfData, setPdfData] = useState("");
     const [syllabusPdf, setSyllabusPdf] = useState(null);
+    const [startDateTime, setStartDateTime] = useState("");
+    const [courseLStatus, setCourseLStatus] = useState('Pending');
+
+
+
 
   let enrollStake;
   if (studentStake) {
@@ -313,6 +322,18 @@ function CourseCard({ item, courseNumber, academyAddress }) {
   // console.log("sponsorAmount", unsponsorAmount);
   // console.log("studentStakeWei", studentStakeWei);
   // console.log("studentStakeEther", studentStakeEther);
+
+  useEffect(() => {
+    if (!paymentStatus && !courseStatus) {
+      setCourseLStatus("Pending");
+    } else if (paymentStatus && !courseStatus) {
+      setCourseLStatus("Open");
+    } else if (!paymentStatus && courseStatus) {
+      setCourseLStatus("In-Progress");
+    } else if (paymentStatus && courseStatus) {
+      setCourseLStatus("Complete");
+    }
+  }, [paymentStatus, courseStatus]);
 
 
   useEffect(() => {
@@ -385,6 +406,7 @@ function CourseCard({ item, courseNumber, academyAddress }) {
     if (uriData && uriData.ok && uriData.headers && uriData.headers.get('content-type') === 'application/json') {
       uriData.json().then((data) => {
         setCourseInfo(data.courseInfo);
+        
       }).catch((error) => {
         console.error('Failed to parse JSON data:', error);
       });
@@ -414,7 +436,6 @@ console.log("paymentStatusEvents:", paymentStatusEvents);
 console.log("roleGrantedEvents:", roleGrantedEvents);
 console.log("dropoutEvents:", dropoutEvents);
 console.log("courseInfo", courseInfo);
-console.log("courseInfoUri", courseInfoUri);
 console.log("pdfData", pdfData);
 console.log("syllabusPdf", syllabusPdf);
 
@@ -438,7 +459,7 @@ console.log("syllabusPdf", syllabusPdf);
       // Validate that all required information is present
       if (!courseTitle || !description || !timeCommitment || !pdfData) {
         console.error("Missing required course information");
-        return; // Exit the function early
+        return null; // Exit the function early
       }
   
       const jsonFile = {
@@ -446,17 +467,19 @@ console.log("syllabusPdf", syllabusPdf);
           title: courseTitle,
           description: description,
           timeCommitment: timeCommitment,
+          startDate: startDateTime,
           syllabus: pdfData
         }
       };
   
-      const courseInfoUri = await storage.upload(jsonFile);
-      console.log("File uploaded successfully:", courseInfoUri);
-      setCourseInfoUri(courseInfoUri);
+      const courseInfo = await storage.upload(jsonFile);
+      console.log("File uploaded successfully:", courseInfo);
+      return courseInfo;
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
   };
+  
   
   
 
@@ -473,14 +496,17 @@ console.log("syllabusPdf", syllabusPdf);
 
   const setPaymentCall = async () => {
     try {
-      if (!courseInfoUri) {
+      // Upload the file and get the course info
+      const courseInfo = await uploadFile();
+  
+      // Check if courseInfo is available
+      if (!courseInfo) {
         console.error("Course info is not available");
         return;
       }
   
-      const setPaymentData = await setPayment({ args: [paymentAmountInWei, courseInfoUri] });
+      const setPaymentData = await setPayment({ args: [paymentAmountInWei, courseInfo] });
       console.info("Contract call success", setPaymentData);
-
       const uriData = await uriCall();
       console.info("uriData call success", uriData);
     } catch (err) {
@@ -531,6 +557,7 @@ console.log("syllabusPdf", syllabusPdf);
     try {
       const startData = await startCourse({ args: [] }); 
       console.info("contract call success", startData);
+      
     } catch (err) {
       console.error("contract call failure", err);
     }
@@ -559,6 +586,7 @@ console.log("syllabusPdf", syllabusPdf);
     try {
       const claimData = await claimPayment({ args: [] });
       console.info("contract call successs", claimData);
+      
     } catch (err) {
       console.error("contract call failure", err);
     }
@@ -627,11 +655,23 @@ console.log("syllabusPdf", syllabusPdf);
 //if (!address) return <div>No wallet connected</div>;
 
 return (
-  <div className="card">
+  <div className={`card ${courseLStatus.toLowerCase()}`}> 
     <div className="card-info">
+    <p className={`medium-text course-status ${courseLStatus.toLowerCase()}`}>
+        Course Status: {courseLStatus}
+      </p>
       <div className="contract-info">
         <p className="small-text">
-          Course #: {courseNumber} | Block #: {item.transaction.blockNumber} | Teacher Address: {item.data.account} | Contract Address: {item.data.courseId} | Contract Balance: {balance} MATIC
+          Course #: {courseNumber} | Block #: {item.transaction.blockNumber} | 
+          Teacher Address: 
+          <a href={`https://polygonscan.com/address/${item.data.account}`} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+            {item.data.account}
+          </a> | 
+          Contract Address: 
+          <a href={`https://polygonscan.com/address/${item.data.courseId}`} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+            {item.data.courseId}
+          </a> | 
+          Contract Balance: {balance} MATIC
         </p>
       </div>
       {teacherAddress == 0x0000000000000000000000000000000000000000 ? (
@@ -667,29 +707,42 @@ return (
           onChange={(e) => setTimeCommitment(e.target.value)}
           placeholder="Time Commitment (hours)"
         />
+        <label htmlFor="course-start">Course Start:</label>
         <input
-          type="file"
-          accept=".pdf"
-          value={syllabusPdf}
-          onChange={(e) => handlePdf(e.target.files[0])}
-          placeholder="Upload Syllabus (PDF only)"
+            type="datetime-local"
+            value={startDateTime}
+            onChange={(e) => setStartDateTime(e.target.value)}
+            placeholder="Start Date and Time"
         />
+            <div className="upload-card">
+                Upload Syllabus<p></p>
+                <input
+                id="file-upload"
+                type="file"
+                accept=".pdf"
+                value={syllabusPdf}
+                onChange={(e) => handlePdf(e.target.files[0])}
+                //style={{display: 'none'}}
+            />
+            </div>
+
          <div>
          <input
-          type="uint"
-          value={paymentAmount}
-          onChange={(e) => {
-            const value = e.target.value;
-            // Check if the value is not empty
-            if (value.trim() !== '' && value.trim() !== '.') {
-              setPaymentAmount(value);
-            } else {
-              setPaymentAmount('0'); // Set an empty string or appropriate default value
-            }
-          }}
-          placeholder="Enter payment amount"
-        />
-
+            type="number"
+            min="0"
+            step="0.000000000000000001"
+            value={paymentAmount}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Check if the value is not empty and is a number
+              if (value.trim() !== '' && !isNaN(value) && Number(value) >= 0) {
+                setPaymentAmount(value);
+              } else {
+                setPaymentAmount('0'); // Set an empty string or appropriate default value
+              }
+            }}
+            placeholder="Enter amount in MATIC"
+          />
       <Web3Button
         contractAddress={item.data.courseId}
         action={async () => {
@@ -701,8 +754,7 @@ return (
             // After successful file upload, call setPaymentCall
             const setPaymentResult = await setPaymentCall();
             console.log("Set payment call success:", setPaymentResult);
-            const uriData = await uriCall();
-            return(uriData);
+            await uriCall();
             
           } catch (error) {
             console.error("Error during file upload or set payment call:", error);
@@ -712,26 +764,38 @@ return (
         theme="dark"
         disabled={isSettingPayment}
       >
-        Set Payment
+        Set Payment (MATIC)
       </Web3Button>
         </div>
       </>
         ) : (
           <>
-              <div className="course-title-container">
-                <p className="course-title">{courseInfo?.title}</p>
-              </div>  
-        <div className="course-details">
-          {courseInfo ? (
-            <>
-
-              <p className="description">{courseInfo?.description}</p>
-              <p className="card-media">Time Commitment: {courseInfo?.timeCommitment} hrs</p>
-            </>
-          ) : (
-            <p>Loading course information...</p>
+          <div className="course-title-container">
+              <p className="course-title">{courseInfo?.title}</p>
+          </div>
+          <div className="course-details">
+              {courseInfo ? (
+                  <>
+                      <p className="description">{courseInfo?.description}</p>
+                      <p className="card-media">Time Commitment: {courseInfo?.timeCommitment} hrs</p>
+                      <p className="card-media">
+                          Course Start:{" "}
+                          {new Date(courseInfo.startDate).toLocaleDateString("en-US", {
+                              weekday: "long",
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              timeZoneName: "short"
+                          })}
+                      </p>
+                  </>
+              ) : (
+                  <p>Loading course information...</p>
           )}
         </div>
+        <a href={`https://polygonscan.com/address/${item.data.courseId}`} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
             <div className="card">{isLoadingStudentDeposit ? <p>Loading...</p> : <p className="course-card">Your Stake: {studentDeposit && ethers.utils.formatEther(studentDeposit.toString())} MATIC </p>}
             <div>{isLoadingPayment ? <p>Loading...</p> : <p className="course-card">Sponsorship Required: {payment && ethers.utils.formatEther(payment.toString())} MATIC</p>}</div>
             <div>{isLoadingSponsorshipTotal ? <p>Loading...</p> : <p className="course-card">Currently Sponsored: {sponsorshipTotal && ethers.utils.formatEther(sponsorshipTotal.toString())} MATIC </p>}</div>
@@ -760,7 +824,7 @@ return (
                 />
               )}
             </div>
-            </div>
+            </div></a>
             <details className="actions student-actions">
               <summary>Student Actions</summary>
               <div>{isLoadingStudentStake ? <p>Loading...</p> : <p>Enrollment Fee: {studentStake && ethers.utils.formatEther(studentStake.toString())} MATIC</p>}</div>
@@ -801,15 +865,29 @@ return (
 
             <details className="actions sponsor-actions">
               <summary>Sponsor Actions</summary>
-              <input type="uint" value={sponsorAmount} onChange={(s) => setSponsorAmount(s.target.value)} placeholder="Enter how much you want to sponsor" />
+              <input
+                type="number"
+                min="0"
+                step="0.000000000000000001"
+                value={sponsorAmount === '0' ? '' : sponsorAmount}
+                onChange={(s) => {
+                  const value = s.target.value;
+                  if (!isNaN(value) && Number(value) >= 0) {
+                    setSponsorAmount(value);
+                  } else {
+                    setSponsorAmount('0');
+                  }
+                }}
+                placeholder="Enter amount in MATIC"
+              />
               <Web3Button
-              contractAddress={item.data.courseId}
-              action={sponsorCall}
-              theme="dark"
-              overrides={{
-                value: sponsorAmountInWei,
-              }}
-            >
+                contractAddress={item.data.courseId}
+                action={sponsorCall}
+                theme="dark"
+                overrides={{
+                  value: sponsorAmountInWei,
+                }}
+              >
                 Sponsor
               </Web3Button>
               <Web3Button
@@ -820,6 +898,7 @@ return (
                 Unsponsor
               </Web3Button>
             </details>
+
             <details className="actions teacher-actions">
               <summary>Teacher Actions</summary>
               <Web3Button
