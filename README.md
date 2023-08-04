@@ -24,19 +24,13 @@ To get started with Peace Antz Academy, follow these steps:
 
 3.  Navigate to the project directory:
 
-    bashCopy code
-
     `cd AcademyBuild`
 
 4.  Install the required dependencies:
 
-    bashCopy code
-
     `npm install`
 
 5.  Start the development server:
-
-    bashCopy code
 
     `npm start`
 
